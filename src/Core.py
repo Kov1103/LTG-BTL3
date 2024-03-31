@@ -7,7 +7,7 @@ from Const import *
 from Map import Map
 from MenuManager import MenuManager
 from Sound import Sound
-
+from MainMenu import MainMenu
 
 class Core(object):
     """
@@ -42,6 +42,7 @@ class Core(object):
             self.update()
             self.render()
             self.clock.tick(FPS)
+        pg.quit()
 
     def input(self):
         if self.get_mm().currentGameState == 'Game':
@@ -84,9 +85,12 @@ class Core(object):
             if e.type == pg.QUIT:
                 self.run = False
 
-            elif e.type == KEYDOWN:
-                if e.key == K_RETURN:
-                    self.get_mm().start_loading()
+            if e.type == pg.MOUSEBUTTONDOWN:
+                mouse_pos = pg.mouse.get_pos()
+                if self.oMM.oMainMenu.toStartText.rect.collidepoint(mouse_pos):
+                    print("Start option selected")
+                elif self.oMM.oMainMenu.toEndText.rect.collidepoint(mouse_pos):
+                   self.run = False
 
     def update(self):
         self.get_mm().update(self)
@@ -102,3 +106,9 @@ class Core(object):
 
     def get_sound(self):
         return self.oSound
+    
+    
+            
+            
+    
+    
