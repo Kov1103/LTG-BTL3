@@ -1,7 +1,7 @@
 import pygame as pg
 
 from Const import *
-
+import copy
 
 class Event(object):
     def __init__(self):
@@ -19,6 +19,7 @@ class Event(object):
         self.player_in_castle = False
         self.tick = 0
         self.score_tick = 0
+        self.sound = {}
 
     def reset(self):
         self.type = 0
@@ -138,3 +139,11 @@ class Event(object):
                         core.get_mm().oLoadingMenu.set_text_and_type('I hope You Enjoyed', False)
                         core.get_mm().oLoadingMenu.update_time()
                         core.get_sound().play('game_over', 0, 0.5)
+                        
+    def turn_off_sound(self, core):
+        self.sound = copy.deepcopy(core.get_sound.sounds)
+        for key in core.get_sound.sounds.keys:
+            core.get_sound.sounds.stop(key)
+    
+    def turn_on_sound(self,core):
+        core.get_sound.sounds = self.sound 
