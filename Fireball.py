@@ -85,7 +85,9 @@ class Fireball(object):
         for mob in core.get_map().get_mobs():
             if self.rect.colliderect(mob.rect):
                 if mob.collision:
-                    mob.die(core, instantly=False, crushed=False)
+                    mob.take_damage()
+                    if mob.health <= 0:
+                        mob.die(core, instantly=False, crushed=False)
                     self.start_boom()
 
     def update(self, core):

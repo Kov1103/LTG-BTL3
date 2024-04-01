@@ -1,4 +1,4 @@
-import pygame as pg
+﻿import pygame as pg
 
 from Entity import Entity
 from Const import *
@@ -10,7 +10,8 @@ class Koopa(Entity):
         self.rect = pg.Rect(x_pos, y_pos, 32, 46)
 
         self.move_direction = move_direction
-
+        self.health = 1
+        
         if move_direction:
             self.x_vel = 1
         else:
@@ -34,7 +35,9 @@ class Koopa(Entity):
     2 - Hidden and fast moving
     -1 - Dead
     """
-
+    def take_damage(self, amount=1):
+        self.health -= amount
+        
     def check_collision_with_player(self, core):
         if self.collision:
             if self.rect.colliderect(core.get_map().get_player().rect):
@@ -53,7 +56,9 @@ class Koopa(Entity):
             if mob is not self:
                 if self.rect.colliderect(mob.rect):
                     if mob.collision:
-                        mob.die(core, instantly=False, crushed=False)
+                        mob.take_damage()
+                        if mob.health <= 0:
+                            mob.die(core, instantly=False, crushed=False)
 
     def die(self, core, instantly, crushed):
         if not instantly:

@@ -4,11 +4,16 @@ from Entity import Entity
 from Const import *
 
 
-class GoombasBoss(Entity):
+class Bowser(Entity):
     def __init__(self, x_pos, y_pos, move_direction):
         super().__init__()
         self.rect = pg.Rect(x_pos, y_pos, 64, 64)
 
+        self.health = 5
+        self.is_damaged = False
+        self.damage_duration = 5
+        self.damage_timer = 0
+        
         if move_direction:
             self.x_vel = 1
         else:
@@ -19,12 +24,20 @@ class GoombasBoss(Entity):
         self.current_image = 0
         self.image_tick = 0
         self.images = [
-            pg.transform.scale(pg.image.load('images/goombas_0.png').convert_alpha(), (64, 64)),
-            pg.transform.scale(pg.image.load('images/goombas_1.png').convert_alpha(), (64, 64)),
-            pg.transform.scale(pg.image.load('images/goombas_dead.png').convert_alpha(), (64, 64)),
+            pg.transform.scale(pg.image.load('images/Bowser_0.png').convert_alpha(), (64, 64)),
+            pg.transform.scale(pg.image.load('images/Bowser_1.png').convert_alpha(), (64, 64)),
+            pg.transform.scale(pg.image.load('images/Bowser_dead.png').convert_alpha(), (64, 64)),
+            pg.transform.scale(pg.image.load('images/Bowser_2.png').convert_alpha(), (64, 64)),
         ]
-        self.images.append(pg.transform.flip(self.images[0], 0, 180))
+        self.images.append(pg.transform.flip(self.images[0], 180, 0))
+        self.images.append(pg.transform.flip(self.images[1], 180, 0))
+        self.images.append(pg.transform.flip(self.images[3], 180, 0))
 
+    def take_damage(self, amount=1):
+        self.health -= amount
+        self.is_damaged = True
+        self.damage_timer = self.damage_duration
+        
     def die(self, core, instantly, crushed):
         if not instantly:
             core.get_map().get_player().add_score(core.get_map().score_for_killing_mob)
@@ -42,7 +55,7 @@ class GoombasBoss(Entity):
                     self.hp -=1    
             else:
                 self.y_vel = -4
-                self.current_image = 3
+                self.current_image = 2
                 core.get_sound().play('shot', 0, 0.5)
                 self.state = -1
                 self.collision = False
@@ -55,7 +68,9 @@ class GoombasBoss(Entity):
             if self.rect.colliderect(core.get_map().get_player().rect):
                 if self.state != -1:
                     if core.get_map().get_player().y_vel > 0:
-                        self.die(core, instantly=False, crushed=True)
+                        self.take_damage()
+                        if self.health <= 0:
+                            self.die(core, instantly=False, crushed=True)
                         core.get_map().get_player().reset_jump()
                         core.get_map().get_player().jump_on_mob()
                     else:
@@ -64,10 +79,22 @@ class GoombasBoss(Entity):
 
     def update_image(self):
         self.image_tick += 1
-        if self.image_tick == 14:
-            self.current_image = 1
-        elif self.image_tick == 28:
-            self.current_image = 0
+
+        if self.x_vel > 0:
+            self.move_direction = True
+        else:
+            self.move_direction = False
+
+        if self.image_tick == 35:
+            if self.move_direction:
+                self.current_image = 5
+            else:
+                self.current_image = 1
+        elif self.image_tick == 70:
+            if self.move_direction:
+                self.current_image = 4
+            else:
+                self.current_image = 0
             self.image_tick = 0
 
     def update(self, core):
@@ -92,6 +119,16 @@ class GoombasBoss(Entity):
                 self.y_vel += GRAVITY
                 self.rect.y += self.y_vel
                 self.check_map_borders(core)
+                
+        if self.is_damaged:
+            self.damage_timer -= 1
+            if self.damage_timer <= 0:
+                self.is_damaged = False
 
     def render(self, core):
+        if self.is_damaged:
+            if self.move_direction:
+                self.current_image = 6
+            else:
+                self.current_image = 3
         core.screen.blit(self.images[self.current_image], core.get_map().get_camera().apply(self))

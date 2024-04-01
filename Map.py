@@ -7,7 +7,7 @@ from Camera import Camera
 from Event import Event
 from Flag import Flag
 from Const import *
-from GoombasBoss import GoombasBoss
+from Bowser import Bowser
 from Platform import Platform
 from Player import Player
 from Goombas import Goombas
@@ -119,7 +119,7 @@ class Map(object):
         self.mobs.append(Goombas(1632, 352, False))
         self.mobs.append(Goombas(1672, 352, False))
         self.mobs.append(Goombas(5570, 352, False))
-        self.mobs.append(Goombas(5620, 352, False))
+        self.mobs.append(Bowser(5620, 352, False))
 
         self.map[21][8].bonus = 'mushroom'
         self.map[78][8].bonus = 'mushroom'
@@ -219,8 +219,8 @@ class Map(object):
     def spawn_goombas(self, x, y, move_direction):
         self.get_mobs().append(Goombas(x, y, move_direction))
 
-    def spawn_goombasBoss(self, x, y, move_direction):
-        self.get_mobs().append(GoombasBoss(x, y, move_direction))
+    def spawn_bowser(self, x, y, move_direction):
+        self.get_mobs().append(Bowser(x, y, move_direction))
 
     def spawn_koopa(self, x, y, move_direction):
         self.get_mobs().append(Koopa(x, y, move_direction))
@@ -337,7 +337,7 @@ class Map(object):
             self.spawn_goombas(4110, 352, False)
             self.spawn_goombas(4190, 352, False)
             self.spawn_goombas(4240, 352, False)
-            self.spawn_goombasBoss(4300, 352, False)
+            self.spawn_goombas(4300, 352, False)
             self.is_mob_spawned[1] = True
 
     def player_death(self, core):

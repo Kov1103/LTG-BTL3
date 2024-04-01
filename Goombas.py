@@ -1,4 +1,4 @@
-import pygame as pg
+﻿import pygame as pg
 
 from Entity import Entity
 from Const import *
@@ -9,6 +9,8 @@ class Goombas(Entity):
         super().__init__()
         self.rect = pg.Rect(x_pos, y_pos, 32, 32)
 
+        self.health = 1
+        
         if move_direction:
             self.x_vel = 1
         else:
@@ -25,6 +27,9 @@ class Goombas(Entity):
         ]
         self.images.append(pg.transform.flip(self.images[0], 0, 180))
 
+    def take_damage(self, amount=1):
+        self.health -= amount
+        
     def die(self, core, instantly, crushed):
         if not instantly:
             core.get_map().get_player().add_score(core.get_map().score_for_killing_mob)
@@ -53,7 +58,9 @@ class Goombas(Entity):
             if self.rect.colliderect(core.get_map().get_player().rect):
                 if self.state != -1:
                     if core.get_map().get_player().y_vel > 0:
-                        self.die(core, instantly=False, crushed=True)
+                        self.take_damage()
+                        if self.health <= 0:
+                            self.die(core, instantly=False, crushed=True)
                         core.get_map().get_player().reset_jump()
                         core.get_map().get_player().jump_on_mob()
                     else:
