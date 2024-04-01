@@ -82,7 +82,7 @@ class Platform(object):
             core.screen.blit(self.image[self.currentImage], core.get_map().get_camera().apply(self))
 
         # Brick block
-        elif (self.typeID == 23 or self.typeID == 25) and self.shaking:
+        elif (self.typeID == 23 or self.typeID == 24) and self.shaking:
             self.shake()
             core.screen.blit(self.image, core.get_map().get_camera().apply(self))
 

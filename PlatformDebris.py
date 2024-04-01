@@ -10,7 +10,7 @@ class PlatformDebris0(object):
 
     """
     def __init__(self, x_pos, y_pos):
-        self.image = pg.image.load('images/block_debris0.png').convert_alpha()
+        self.image = pg.image.load('images/block_debris1.png').convert_alpha()
 
         # 4 different parts
         self.rectangles = [
@@ -47,7 +47,7 @@ class PlatformDebris1(object):
 
     """
     def __init__(self, x_pos, y_pos):
-        self.image = pg.image.load('images/block_debris1.png').convert_alpha()
+        self.image = pg.image.load('images/block_debris0.png').convert_alpha()
 
         # 4 different parts
         self.rectangles = [

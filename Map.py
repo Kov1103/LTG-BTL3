@@ -116,7 +116,7 @@ class Map(object):
         # Mobs
         self.mobs.append(Goombas(736, 352, False))
         self.mobs.append(Goombas(1295, 352, True))
-        self.mobs.append(Goombas(1632, 352, False))
+        self.mobs.append(Koopa(1632, 352, False))
         self.mobs.append(Goombas(1672, 352, False))
         self.mobs.append(Goombas(5570, 352, False))
         self.mobs.append(Bowser(5620, 352, False))
@@ -331,13 +331,13 @@ class Map(object):
             self.spawn_goombas(3200, 352, False)
             self.spawn_goombas(3250, 352, False)
             self.spawn_koopa(3400, 352, False)
-            self.spawn_goombas(3700, 352, False)
-            self.spawn_goombas(3750, 352, False)
-            self.spawn_goombas(4060, 352, False)
-            self.spawn_goombas(4110, 352, False)
-            self.spawn_goombas(4190, 352, False)
-            self.spawn_goombas(4240, 352, False)
-            self.spawn_goombas(4300, 352, False)
+            self.spawn_goombas(3550, 352, False)
+            self.spawn_goombas(3760, 352, False)
+            self.spawn_goombas(3600, 352, True)
+            self.spawn_goombas(3744, 352, True)
+            self.spawn_goombas(3648, 352, False)
+            self.spawn_goombas(3680, 352, False)
+            self.spawn_goombas(3712, 352, False)
             self.is_mob_spawned[1] = True
 
     def player_death(self, core):

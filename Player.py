@@ -330,7 +330,7 @@ class Player(object):
                 block.spawn_bonus(core)
 
         # Brick Platform
-        elif block.typeID == 23 or block.typeID == 25:
+        elif block.typeID == 23 or block.typeID == 24:
             if self.powerLVL == 0:
                 block.shaking = True
                 core.get_sound().play('block_hit', 0, 0.5)
